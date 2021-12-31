@@ -1,4 +1,4 @@
-# Quasar App (qqq1)
+# CryptoCola Client
 
 A Quasar Framework app
 여기서 Backtest UI 와 dbcola UI를 Quasra 버전으로 테스트 작업한다.
@@ -30,6 +30,11 @@ ApexChart 설치
 Vue Draggable 설치 예정
 
 ## 깨달음
+### 대발견 https://tvjs.io/
+TradingView 유사한 기능의 stock chart 전문 component
+도대체 세상엔 머리좋은 친구들이 너무 많아 
+집에서 이거나 해야지
+
 ### apexChart 로딩시 계속
 문제는 quasar에서 내재된 vue 버전이 3.2.x 임 
 그래서 3.x버전의 ApexChart 를 npm install vue3-apexcharts 를 설치하여 문제 해결
@@ -53,3 +58,4 @@ sortable이 됮지않은 현상이 발생함
 ### dbcola/2   페이지의 사항
 data() 대신에 setup() 으로 변경함 
 이렇게하면 sortable이 되지 않음. 이것도 변수가 readonly 의 형식으로 진행한다.
+

@@ -5,6 +5,7 @@
 <script>
 import VueApexCharts from 'vue3-apexcharts'
 
+
 export default {
   name: 'CandleChart',
   components:{
@@ -13,15 +14,39 @@ export default {
   props:{ prices :Array },
   data () {
     return {
-      series: [{
+      series: [
+        {
+          name: 'line',
+          type: 'line',
+          data: [
+            {
+              x: new Date(1638286200000),
+              y: 1.57650000000000000000
+            }, {
+              x: new Date(1638287100000),
+              y: 1.67650000000000000000
+            }, {
+              x: new Date(1638288000000),
+              y: 1.58650000000000000000
+            }, {
+              x: new Date(1638288900000),
+              y: 1.61650000000000000000
+            }
+          ]
+        },
+
+        {        
         name: 'Series 1',
+        type: 'candlestick',        
         data: this.prices
       }],
       chartOptions: {
         animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 1000
+          enabled: false,
+          // enabled: true,
+          // easing: 'easeinout',
+          // speed: 1000
+
         },
         title: {
           text: 'Candle Stick',

@@ -2,40 +2,7 @@
   <div class="q-pa-md row items-start q-gutter-md">          
     <q-btn
      @click="handleGetReuests()"
-    >GET LIST</q-btn>
-    <q-card class="my-card">
-      <img src="https://cdn.quasar.dev/img/mountains.jpg">
-
-      <q-card-section>
-        <div class="text-h6">Our Changing Planet</div>
-        <div class="text-subtitle2">by John Doe</div>
-      </q-card-section>
-
-      <q-card-section class="q-pt-none">
-        {{ lorem }}
-      </q-card-section>
-    </q-card>
-
-    <q-card v-for="req in testRequests" :key="req.reqTime">
-      <q-card-section>
-        <div class="text-h6">{{req.reqTime}}</div>
-        <div class="text-subtitle2">{{req.strategyId}}</div>
-        <div class="">{{req.strategyId}}</div>
-      </q-card-section>
-
-      <q-separator />
-
-      <q-card-actions>
-        <q-btn flat round icon="event" />
-        <q-btn flat>
-          7:30PM
-        </q-btn>
-        <q-btn flat color="primary">
-          Reserve
-        </q-btn>
-      </q-card-actions>
-
-    </q-card>
+    >GET LIST</q-btn>        
 
     <q-table
       title="Test Requests"             
@@ -94,6 +61,9 @@ export default {
       columns     : columns,
       testRequests: []
     }
+  },
+  mounted() {
+    this.handleGetReuests();
   },
   methods:{
     handleGetReuests:function() {

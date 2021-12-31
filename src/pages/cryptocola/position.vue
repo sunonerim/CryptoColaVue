@@ -38,15 +38,19 @@
               <q-td >{{ col.value }}</q-td>
             </template>           
          </q-tr>
-      </template>
-
-            
+      </template>            
       </q-table>
+
       <div>
         <span>title</span>
-        <span>{{ $route.query.text }}</span>
         <span>{{ $route.params.reqtime }}</span>
       </div>
+
+<!-- CHART -->    
+      <div>
+        <candle-chart :prices="prices"></candle-chart>
+      </div>
+
   </div>
 
 </template>
@@ -54,6 +58,7 @@
 <script>
 import { ref }      from "vue"
 import axios        from "axios"
+import CandleChart  from "/src/components/CandleChart.vue"
 
 function  test_format( val) {
   return val.substring(0,4) + '-' +  val.substring(4,6) + '-' + val.substring(6,8)  + ' ' + val.substring(8,10) + ':'+ val.substring(10,12) + ':'+ val.substring(12,14) ;  
@@ -64,8 +69,16 @@ function  format_percent( val){
   return Number(val * 100).toFixed(2) + '%';
 }
 
+function  alignment( field ) {
+    console.log( field );
+}
+
 export default {      
   name: 'Params',
+  components: {       
+    CandleChart      
+  },
+
   props: {
       reqtime: Number,
   },
@@ -88,24 +101,54 @@ export default {
                       { name: 'profit'        , label: 'profit'         , field: 'profit'      , align: 'right' },
                       { name: 'rate'          , label: 'rate'           , field: 'rate'        , align: 'right' },
                     ],
-      positions: []
+      positions: [],
+      prices:[],
     }
   },
+
+  mounted() {
+    this.handleGetPositions();
+  },
+
   methods:{
     handleGetPositions:function() {
-      let that = this;
+      let self = this;
       console.log( '$route.params.reqtime', this.reqtime );
             
       axios.get('http://localhost:8002/backtest/positions', {params:{reqTime:this.reqtime}} )
-            .then( function( respose ){ 
-              that.positions= [];             
-              respose.data.forEach( position => {
-                console.log( position );                
-                that.positions.push( position ) ;  
-              });              
-              
+            .then( function( response ){ 
+              self.positions= [];             
+              response.data.forEach( position => {
+                // console.log( position );                
+                self.positions.push( position ) ;  
+              });                            
             })
+      this.requestChart();
     },
+
+    requestChart  :function() {
+      let self = this;
+      console.log( '$route.params.reqtime', this.reqtime );
+            
+      axios.get('http://localhost:8002/backtest/chart', {params:{reqTime:this.reqtime}} )
+            .then( function( response ){ 
+              // console.log( response );
+              // self.positions= [];             
+              // respose.data.forEach( position => {
+              //   console.log( position );                
+              //   self.positions.push( position ) ;  
+              // });             
+              response.data.candle.forEach( c => {
+                let price_data = 
+                {
+                  x: new Date( c.openTime),
+                  y: [ c.openPrice, c.highPrice, c.lowPrice, c.closePrice]
+                };
+                self.prices.push( price_data );
+              });                
+            })      
+    },
+
     handleRowClick : function( e, row, index ) {
       console.log( row, index) ;
       window.open('/#/dbcola/position')
