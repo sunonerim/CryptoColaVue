@@ -2,6 +2,8 @@
 
 A Quasar Framework app
 여기서 Backtest UI 와 dbcola UI를 Quasra 버전으로 테스트 작업한다.
+
+STOCK CHART는 tradinview.com light weight chart 를 사용하기로함
 ## Install the dependencies
 ```bash
 npm install
@@ -35,9 +37,17 @@ TradingView 유사한 기능의 stock chart 전문 component
 도대체 세상엔 머리좋은 친구들이 너무 많아 
 집에서 이거나 해야지
 
+**21/1/7** 이게 vue 2.x 에서 실행된다. 그래서 집에서 project를 vue 2 quasaar 1.x 버전으로 테스트함
+그런데 이게 스클롤에 민감하고 또한 ovelay 기능을 응용하는 과정이 쉽지가 않다.
+또한 팀 자체가 어디에 팔려 갔는지 더이상 git 가 업데이트 되지않는다. 
+그래서 아예 tradingview.com 의 lightweight trading chart libray를 이용하기로 함
+
+
 ### apexChart 로딩시 계속
 문제는 quasar에서 내재된 vue 버전이 3.2.x 임 
 그래서 3.x버전의 ApexChart 를 npm install vue3-apexcharts 를 설치하여 문제 해결
+**21/1/7**  apex charting은 너무 처리 속도가 느림
+이것은 WEB에서 간단히 보는 용도임 또한 candle stick 위에 다른 graph 를 그리는데 문제가 있음
 ```
 npm install vue3-apexcharts
 npm install apexcharts

@@ -15,8 +15,7 @@
         @row-click="handleRowClick"      
         class="my-sticky-virtscroll-table"
       />
-      <div>        
-        <candle-chart :prices="prices"></candle-chart>
+      <div>
       </div>
   </div>
 
@@ -25,7 +24,6 @@
 <script>
 import { ref }      from "vue"
 import axios        from "axios"
-import CandleChart  from "/src/components/CandleChart.vue"
 
 
 function  test_format( val) {
@@ -38,9 +36,9 @@ function  format_percent( val){
 }
 
 export default {   
-   components: {       
-      CandleChart      
-     },
+  //  components: {       
+  //     CandleChart      
+  //    },
 
   data () {
     return {
