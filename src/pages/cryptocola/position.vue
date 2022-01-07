@@ -1,6 +1,5 @@
 <template>
-  <div>
-    
+  <div>    
     <q-btn
       @click="handleGetPositions()">GET LIST</q-btn>
       <q-table
@@ -44,15 +43,8 @@
       <div>
         <span>title</span>
         <span>{{ $route.params.reqtime }}</span>
-      </div>
-
-<!-- CHART -->    
-      <div>
-        <!-- <candle-chart :prices="prices"></candle-chart> -->        
-      </div>
-
-      
-
+      </div>      
+      <div id="chartPanel"></div>
   </div>
 
 </template>
@@ -121,10 +113,10 @@ export default {
   },
 
   methods:{
-    drawCandle        : function() {
+    drawCandle        : function( candle_data ) {
       console.log( '------------ draw chart -------------------');
-      var chart = createChart(document.body, {
-        width: 600,
+      var chart = createChart( 'chartPanel', {
+        width: 1200,
         height: 300,
         timeScale: {
             timeVisible: true,
@@ -255,7 +247,13 @@ export default {
       { time: {year: 2018, month: 12, day: 29} , open: 75.65816205696441 , high: 75.65816205696441 , low: 63.710206287837266 , close: 63.710206287837266 },
       { time: {year: 2018, month: 12, day: 30} , open: 70.43199072631421 , high: 80.48229715762909 , low: 62.65542750589909 , close: 63.42588929424237 },
       { time: {year: 2018, month: 12, day: 31} , open: 74.18101512382138 , high: 79.0918171034821 , low: 57.80109358134577 , close: 72.91361896511863 }];
-      series.setData(data);
+      
+      if( candle_data ) {
+        series.setData(candle_data);
+      }else {
+        series.setData(data);
+      }
+      
 
       var datesForMarkers = [data[data.length - 39], data[data.length - 19]];
       var indexOfMinPrice = 0;
@@ -289,8 +287,8 @@ export default {
               });                            
             })
 
-      self.drawCandle();
-
+      
+        self.requestChart();  
     },
 
     requestChart  :function() {
@@ -304,14 +302,28 @@ export default {
               //   self.positions.push( position ) ;  
               // });             
               response.data.candle.forEach( c => {
-                let price_data = 
-                {
-                  x: new Date( c.openTime),
-                  y: [ c.openPrice, c.highPrice, c.lowPrice, c.closePrice]
+                console.log( c) ;
+                let candle = {
+                  time:c.openTime/1000,
+                  open:c.openPrice,
+                  high:c.highPrice,
+                  low:c.lowPrice,
+                  close:c.closePrice
                 };
-                self.prices.push( price_data );
+
+                // let candle = 
+                // {
+                //   x: new Date( c.openTime),
+                //   y: [ c.openPrice, c.highPrice, c.lowPrice, c.closePrice]
+                // };
+                self.prices.push( candle );                
+                
               });                
+
+              self.drawCandle( self.prices );
             })      
+
+            
     },
 
     handleRowClick : function( e, row, index ) {
