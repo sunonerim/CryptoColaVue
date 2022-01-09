@@ -68,6 +68,13 @@ function  alignment( field ) {
     console.log( field );
 }
 
+// COLOR DEFINITION 
+const colorGain = '#00FF33';
+const colorLoss = '#FF3399';
+
+const colorShortLine = '#00FF33';
+const colorLongLine  = '#E91E63';
+
 export default {      
   name: 'Params',
   components: {           
@@ -99,12 +106,7 @@ export default {
       markers:[],
       chart: Data,
       width: window.innerWidth,
-      height: window.innerHeight,
-      colors: {
-          colorBack: '#fff',
-          colorGrid: '#eee',
-          colorText: '#333',
-      },
+      height: window.innerHeight,      
     }
   },
 
@@ -141,8 +143,9 @@ export default {
       });
 
       var series = chart.addCandlestickSeries({
-          upColor: 'rgb(38,166,154)',
-          downColor: 'rgb(255,82,82)',
+          upColor: '#0ECB81', //rgb(38,166,154)',
+          // downColor: 'rgb(255,82,82)',
+          downColor: '#F6465D',
           wickUpColor: 'rgb(38,166,154)',
           wickDownColor: 'rgb(255,82,82)',
           borderVisible: false,
@@ -171,6 +174,13 @@ export default {
       //   }
       // }
       series.setMarkers(_markers);
+
+      var smaLine = chart.addLineSeries({
+	    color: 'rgba(4, 111, 232, 1)',
+	      lineWidth: 2,
+      });
+      smaLine.setData(smaData);
+
       console.log( '------------ draw chart END -------------------');
     },
 
@@ -224,8 +234,11 @@ export default {
               // MARKER 
               self.markers = [];
               self.positions.forEach ( p => {
-                let enter  = { time: self.candles[p.enterIndex].time, position: 'belowBar', color: '#2196F3', shape: 'arrowUp', text: 'Buy @ ' + p.enterPrice };                
-                let exit   = { time: self.candles[ p.exitIndex].time, position: 'aboveBar', color: '#e91e63', shape: 'arrowDown', text: 'Sell @ '   + p.exitPrice  };
+                let rate = Math.round( p.rate * 100 ) / 100;
+                let exit_color = rate>0?colorGain:colorLoss;
+
+                let enter  = { time: self.candles[p.enterIndex].time, position: 'belowBar', color: '#FFFFFF', shape: 'arrowUp', text: 'ENTER ' + p.enterPrice };                
+                let exit   = { time: self.candles[ p.exitIndex].time, position: 'aboveBar', color: exit_color, shape: 'arrowDown', text: `EXIT  ${p.exitPrice}  (${rate}%)` };
                 self.markers.push( enter );
                 self.markers.push( exit  );                
               });              
